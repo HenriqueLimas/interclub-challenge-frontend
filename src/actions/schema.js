@@ -1,4 +1,4 @@
-import { Schema, arrayOf } from 'normalizr'
+import { schema } from 'normalizr'
 
-export const member = new Schema('members')
-export const arrayOfMembers = arrayOf(todo)
+export const member = new schema.Entity('members')
+export const arrayOfMembers = [member]

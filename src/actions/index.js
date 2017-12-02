@@ -2,7 +2,7 @@ import { normalize } from 'normalizr'
 import * as schema from './schema'
 import { getIsFetching } from '../reducers'
 
-export const fetchMembers = () => (dispatch, getStore, api) => {
+export const fetchMembers = () => (dispatch, getState, api) => {
   if (getIsFetching(getState())) {
     return Promise.resolve()
   }
@@ -15,7 +15,7 @@ export const fetchMembers = () => (dispatch, getStore, api) => {
     response => {
       dispatch({
         type: 'FETCH_MEMBERS_SUCCESS',
-        reponse: normalize(response, schema.arrayOfMembers),
+        response: normalize(response, schema.arrayOfMembers),
       })
     },
     error => {

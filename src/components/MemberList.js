@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import styled from 'styled-components';
-import axios from 'axios';
+import React from 'react'
+import PropTypes from 'prop-types'
+import styled from 'styled-components'
 
-import MemberItem from './MemberItem';
+import MemberItem from './MemberItem'
 
 const StyledWrapper = styled.div`
     display: flex;
@@ -12,32 +12,24 @@ const StyledWrapper = styled.div`
     justify-content: space-between;
 `
 
-export default class MemberList extends Component {
-    constructor() {
-        super();
+const MemberList = ({ members }) => (
+  <StyledWrapper>
+    {members.map(member =>
+      <MemberItem
+        key={member.id}
+        member={member}
+      />
+    )}
+  </StyledWrapper>
+)
 
-        this.state = {
-            members: []
-        }
-    }
-
-    async componentWillMount() {
-        try {
-            const res = await axios.get('http://localhost:4000/api/list-members');
-            const members = res.data;
-            this.setState({members});
-        } catch (err) {
-            console.error(err);
-        }
-    }
-
-    render() {
-        const mappedMembers =  this.state.members.map(member => <MemberItem member={member} key={member.id} />);
-
-        return (
-            <StyledWrapper>
-                {mappedMembers}
-            </StyledWrapper>
-        )
-    }
+MemberList.propTypes = {
+  members: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    first_name: PropTypes.string.isRequired,
+    last_name: PropTypes.string.isRequired,
+    number: PropTypes.number.isRequired,
+  }))
 }
+
+export default MemberList

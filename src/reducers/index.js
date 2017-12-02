@@ -9,7 +9,7 @@ const members = combineReducers({
 
 export default members
 
-export const getMembers = state => {
+export const getVisibleMembers = state => {
   const ids = fromList.getIds(state.list)
   return ids.map(fromById.getMember(state.byId))
 }

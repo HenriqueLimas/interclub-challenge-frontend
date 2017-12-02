@@ -1,7 +1,5 @@
-import React, {Component} from 'react';
+import React from 'react';
 import styled from 'styled-components';
-
-import MemberList from './MemberList';
 
 const StyledWrapper = styled.div`
     width: 100vw;
@@ -21,15 +19,13 @@ const StyledLogoLink = styled.a`
     height: 48px;
 `;
 
-export default class App extends Component {
-    render() {
-        return (
-            <StyledWrapper>
-                <StyledLogoLink href='https://interclub.io' target='_blank'>
-                    <img src='/assets/inv_logo_48x48.png' />
-                </StyledLogoLink>
-                <MemberList />
-            </StyledWrapper>
-        );
-    }
-}
+const App = ({ children }) => (
+    <StyledWrapper>
+        <StyledLogoLink href='https://interclub.io' target='_blank'>
+            <img alt='interclub logo' src='/assets/inv_logo_48x48.png' />
+        </StyledLogoLink>
+        {children}
+    </StyledWrapper>
+)
+
+export default App
