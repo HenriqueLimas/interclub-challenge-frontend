@@ -2,7 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { injectGlobal } from 'styled-components'
 
-import App from './App';
+import Root from './components/Root'
+import configureStore from './configureStore'
 
 injectGlobal`
     * {
@@ -20,4 +21,6 @@ injectGlobal`
     }
 `
 
-ReactDOM.render(<App />, document.getElementById('root'));
+const store = configureStore()
+
+ReactDOM.render(<Root store={store} />, document.getElementById('root'));
