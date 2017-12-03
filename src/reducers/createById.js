@@ -1,6 +1,6 @@
 const createById = name => {
   const byId = (state={}, action) => {
-    if (action.response) {
+    if (action.response && action.response.entities) {
       return {
         ...state,
         ...action.response.entities[name],

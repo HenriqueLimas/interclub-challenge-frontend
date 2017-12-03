@@ -1,9 +1,13 @@
 import { normalize } from 'normalizr'
 import * as schema from './schema'
-import { getIsFetching, getIsFetchingTransactions } from '../reducers'
 import * as actionTypes from './actionTypes'
+import {
+  getIsFetching,
+  getIsFetchingTransactions,
+  getIsFetchingTransactionsGraph
+} from '../reducers'
 
-const createFetchAction = ({ actionTypes, schema, getApi, getIsFetching }) => (...apiArgs) => (dispatch, getState, api) => {
+const createFetchAction = ({ actionTypes, schema, getApi, getIsFetching, mapResponse=normalize }) => (...apiArgs) => (dispatch, getState, api) => {
   if (getIsFetching(getState())) {
     return Promise.resolve()
   }
@@ -17,7 +21,7 @@ const createFetchAction = ({ actionTypes, schema, getApi, getIsFetching }) => (.
       dispatch({
         id: apiArgs[0] || null,
         type: actionTypes.SUCCESS,
-        response: normalize(response, schema),
+        response: mapResponse(response, schema),
       })
     },
     error => {
@@ -48,4 +52,47 @@ export const fetchMemberTransactions = createFetchAction({
   schema: schema.arrayOfTransactions,
   getApi: api => api.fetchMemberTransactions,
   getIsFetching: getIsFetchingTransactions,
+})
+
+export const fetchMemberTransactionsGraph = createFetchAction({
+  actionTypes: actionTypes.transactionsGraph,
+  getApi: api => api.fetchMemberTransactionsGraph,
+  getIsFetching: getIsFetchingTransactionsGraph,
+  mapResponse: response => {
+    let { income, expense } = response
+
+    const addToMonth = type => (months, item) => {
+      const { year, month } = item._id
+      const date = `${month}/${year}`
+      const sort = (year * 100) + month
+      months[date] = months[date] || {}
+
+      months[date] = {
+        income: 0,
+        expense: 0,
+        ...months[date],
+        sort,
+        date,
+        [type]: item.count,
+      }
+
+      return months
+    }
+
+    let months = income.reduce(addToMonth('income'), {})
+    months = expense.reduce(addToMonth('expense'), months)
+
+    return Object.values(months)
+      .sort((a, b) => {
+        if (a.sort > b.sort) {
+          return 1
+        }
+
+        if (a.sort < b.sort) {
+          return -1
+        }
+
+        return 0
+      })
+  }
 })

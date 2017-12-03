@@ -4,6 +4,8 @@ import { connect } from 'react-redux'
 import * as actions from '../actions'
 import { getVisibleMembers, getErrorMessage, getIsFetching } from '../reducers'
 import MemberList from './MemberList'
+import Loading from './Loading'
+
 
 export class VisibleMemberList extends Component {
   componentDidMount() {
@@ -26,8 +28,11 @@ export class VisibleMemberList extends Component {
     }
 
     return (
-      <MemberList
-        members={members} />
+      <div>
+        <Loading isLoading={isFetching} />
+        <MemberList
+          members={members} />
+      </div>
     )
   }
 }

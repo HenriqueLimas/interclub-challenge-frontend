@@ -11,6 +11,7 @@ const members = combineReducers({
   list: createList(actionTypes.members),
   member: createList(actionTypes.member),
   transactions: createListById(actionTypes.transactions),
+  transactionsGraph: createListById(actionTypes.transactionsGraph),
 })
 
 export default members
@@ -24,6 +25,9 @@ export const getVisibleTransactions = (state, memberId) => {
   const ids = fromListById.getIds(state.transactions, memberId)
   return ids.map(fromTransactionsById.getTransaction(state.transactionsById))
 }
+
+export const getVisibleTransactionsGraph = (state, memberId) =>
+  fromListById.getIds(state.transactionsGraph, memberId)
 
 export const getVisibleMember = (state, memberId) =>
   fromById.getMember(state.byId)(memberId)
@@ -39,3 +43,6 @@ export const getIsFetchingTransactions = state =>
 
 export const getErrorMessage = state =>
   fromList.getErrorMessage(state.list)
+
+export const getIsFetchingTransactionsGraph = state =>
+  fromList.getIsFetching(state.transactionsGraph)

@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
+import styled from 'styled-components'
 import Card from './Card'
 import TransactionList from './TransactionList'
 import TransactionGraph from './TransactionGraph'
@@ -6,6 +8,20 @@ import TransactionGraph from './TransactionGraph'
 const Container = Card.extend`
   width: 100%;
   height: auto;
+`
+
+const Header = styled.div`
+  position: relative;
+  text-align: center;
+  width: 100%;
+`
+
+const BackButton = styled(Link)`
+  position: absolute;
+  top: 28px;
+  left: 15px;
+  text-decoration: none;
+  color: inherit;
 `
 
 class MemberDetails extends Component {
@@ -24,14 +40,22 @@ class MemberDetails extends Component {
   }
 
   displayGraph() {
-    const { transactions } = this.props
+    const { graphData } = this.props
 
-    if (!transactions || !transactions.length) {
+    if (!graphData) {
       return null
     }
 
+    const Container = styled.div`
+      margin-top: 20px;
+      text-align: center;
+    `
+
     return (
-      <TransactionGraph transactions={transactions} />
+      <Container>
+        <h3>Changes</h3>
+        <TransactionGraph data={graphData} />
+      </Container>
     )
   }
 
@@ -40,7 +64,10 @@ class MemberDetails extends Component {
 
     return (
       <Container hover={false}>
-        <h1>{`${member.first_name} ${member.last_name}`}</h1>
+        <Header>
+          <BackButton to="/">Back</BackButton>
+          <h1>{`${member.first_name} ${member.last_name}`}</h1>
+        </Header>
         {this.displayTransactions()}
         {this.displayGraph()}
       </Container>

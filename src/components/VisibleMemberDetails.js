@@ -7,15 +7,19 @@ import {
   getVisibleMember,
   getIsFetchingMember,
   getVisibleTransactions,
-  getIsFetchingTransactions
+  getIsFetchingTransactions,
+  getVisibleTransactionsGraph,
+  getIsFetchingTransactionsGraph
 } from '../reducers'
 
+import Loading from './Loading'
 import MemberDetails from './MemberDetails'
 
 export class VisibleMemberDetails extends Component {
   componentDidMount() {
     this.fetchMember()
     this.fetchTransactions()
+    this.fetchTransactionsGraph()
   }
 
   fetchMember() {
@@ -30,17 +34,26 @@ export class VisibleMemberDetails extends Component {
     fetchMemberTransactions(memberId)
   }
 
+  fetchTransactionsGraph() {
+    const { memberId, fetchMemberTransactionsGraph } = this.props
+
+    fetchMemberTransactionsGraph(memberId)
+  }
+
   render() {
-    const { isFetching, member, transactions } = this.props
+    const { isFetching, member, transactions, graphData } = this.props
 
     if (isFetching || !member) {
-      return <p>Loading</p>
+      return <Loading isLoading={isFetching} />
+
     }
 
     return (
       <MemberDetails
         member={member}
-        transactions={transactions} />
+        graphData={graphData}
+        transactions={transactions}
+      />
     )
   }
 }
@@ -50,6 +63,7 @@ const mapStateToProps = (state, { match: { params }}) => ({
   member: getVisibleMember(state, params.id),
   memberId: params.id,
   transactions: getVisibleTransactions(state, params.id),
+  graphData: getVisibleTransactionsGraph(state, params.id),
 })
 
 export default withRouter(connect(

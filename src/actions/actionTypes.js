@@ -7,3 +7,4 @@ const createAsyncActionTypes = actionType => ({
 export const member = createAsyncActionTypes('FETCH_MEMBER')
 export const members = createAsyncActionTypes('FETCH_MEMBERS')
 export const transactions = createAsyncActionTypes('FETCH_MEMBER_TRANSACTIONS')
+export const transactionsGraph = createAsyncActionTypes('FETCH_MEMBER_TRANSACTIONS_GRAPH')

@@ -17,5 +17,5 @@ export const fetchMemberTransactions = id =>
     .then(extractData)
 
 export const fetchMemberTransactionsGraph = id =>
-  axios.get(`${API_BASE}/members/${id}/transactions/graphs`)
+  axios.get(`${API_BASE}/members/${id}/transactions/graph`)
     .then(extractData)

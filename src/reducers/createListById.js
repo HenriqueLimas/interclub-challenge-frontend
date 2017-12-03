@@ -6,7 +6,7 @@ const createListById = ({ SUCCESS, REQUEST, FAILURE }) => {
       case SUCCESS:
         return {
           ...state,
-          [action.id]: action.response.result
+          [action.id]: action.response.result || action.response
         }
       default:
         return state
