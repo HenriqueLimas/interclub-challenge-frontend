@@ -15,6 +15,7 @@ const createFetchAction = ({ actionTypes, schema, getApi, getIsFetching }) => (.
   return getApi(api)(...apiArgs).then(
     response => {
       dispatch({
+        id: apiArgs[0] || null,
         type: actionTypes.SUCCESS,
         response: normalize(response, schema),
       })
@@ -35,9 +36,16 @@ export const fetchMembers = createFetchAction({
   getIsFetching,
 })
 
-export const fetchMembersTransactions = createFetchAction({
+export const fetchMember = createFetchAction({
+  actionTypes: actionTypes.member,
+  schema: schema.member,
+  getApi: api => api.fetchMember,
+  getIsFetching,
+})
+
+export const fetchMemberTransactions = createFetchAction({
   actionTypes: actionTypes.transactions,
   schema: schema.arrayOfTransactions,
-  getApi: api => api.fetchMembersTransactions,
+  getApi: api => api.fetchMemberTransactions,
   getIsFetching: getIsFetchingTransactions,
 })

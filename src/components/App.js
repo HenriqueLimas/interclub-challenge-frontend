@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { Route } from 'react-router-dom'
 import VisibleMemberList from './VisibleMemberList'
+import VisibleMemberDetails from './VisibleMemberDetails';
 
 const StyledWrapper = styled.div`
   width: 100vw;
@@ -21,12 +22,23 @@ const StyledLogoLink = styled.a`
   height: 48px;
 `;
 
+const StyledContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  padding: 50px calc((100vw - 860px) / 2);
+  justify-content: space-between;
+`
+
 const App = () => (
   <StyledWrapper>
     <StyledLogoLink href='https://interclub.io' target='_blank'>
       <img alt='interclub logo' src='/assets/inv_logo_48x48.png' />
     </StyledLogoLink>
-    <Route exact path="/" component={VisibleMemberList} />
+    <StyledContainer>
+      <Route exact path="/" component={VisibleMemberList} />
+      <Route exact path="/members/:id" component={VisibleMemberDetails} />
+    </StyledContainer>
   </StyledWrapper>
 )
 
