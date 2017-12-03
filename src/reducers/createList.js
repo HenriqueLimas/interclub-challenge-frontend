@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux'
 
-const createList = () => {
+const createList = ({ SUCCESS, REQUEST, FAILURE }) => {
   const ids = (state=[], action) => {
     switch (action.type) {
-      case 'FETCH_MEMBERS_SUCCESS':
+      case SUCCESS:
         return action.response.result
       default:
         return state
@@ -12,10 +12,10 @@ const createList = () => {
 
   const isFetching = (state=false, action) => {
     switch (action.type) {
-      case 'FETCH_MEMBERS_REQUEST':
+      case REQUEST:
         return true
-      case 'FETCH_MEMBERS_SUCCESS':
-      case 'FETCH_MEMBERS_FAILURE':
+      case SUCCESS:
+      case FAILURE:
         return false
       default:
         return state
@@ -24,10 +24,10 @@ const createList = () => {
 
   const errorMessage = (state=null, action) => {
     switch(action.type) {
-      case 'FETCH_MEMBERS_FAILURE':
+      case FAILURE:
         return action.message
-      case 'FETCH_MEMBERS_SUCCESS':
-      case 'FETCH_MEMBERS_REQUEST':
+      case SUCCESS:
+      case REQUEST:
         return null
       default:
         return state

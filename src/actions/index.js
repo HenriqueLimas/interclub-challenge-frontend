@@ -1,28 +1,43 @@
 import { normalize } from 'normalizr'
 import * as schema from './schema'
-import { getIsFetching } from '../reducers'
+import { getIsFetching, getIsFetchingTransactions } from '../reducers'
+import * as actionTypes from './actionTypes'
 
-export const fetchMembers = () => (dispatch, getState, api) => {
+const createFetchAction = ({ actionTypes, schema, getApi, getIsFetching }) => (...apiArgs) => (dispatch, getState, api) => {
   if (getIsFetching(getState())) {
     return Promise.resolve()
   }
 
   dispatch({
-    type: 'FETCH_MEMBERS_REQUEST',
+    type: actionTypes.REQUEST,
   })
 
-  return api.fetchMembers().then(
+  return getApi(api)(...apiArgs).then(
     response => {
       dispatch({
-        type: 'FETCH_MEMBERS_SUCCESS',
-        response: normalize(response, schema.arrayOfMembers),
+        type: actionTypes.SUCCESS,
+        response: normalize(response, schema),
       })
     },
     error => {
       dispatch({
-        type: 'FETCH_MEMBERS_FAILURE',
+        type: actionTypes.FAILURE,
         message: error.message || 'Something went wrong.'
       })
     }
   )
 }
+
+export const fetchMembers = createFetchAction({
+  actionTypes: actionTypes.members,
+  schema: schema.arrayOfMembers,
+  getApi: api => api.fetchMembers,
+  getIsFetching,
+})
+
+export const fetchMembersTransactions = createFetchAction({
+  actionTypes: actionTypes.transactions,
+  schema: schema.arrayOfTransactions,
+  getApi: api => api.fetchMembersTransactions,
+  getIsFetching: getIsFetchingTransactions,
+})

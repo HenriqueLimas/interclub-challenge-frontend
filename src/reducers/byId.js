@@ -1,13 +1,7 @@
-const byId = (state={}, action) => {
-  if (action.response) {
-    return {
-      ...state,
-      ...action.response.entities.members,
-    }
-  }
-  return state
-}
+import createById from './createById'
 
-export default byId
+const byId = createById('members')
 
-export const getMember = state => id => state[id]
+export default byId.reducer
+
+export const getMember = byId.getter
