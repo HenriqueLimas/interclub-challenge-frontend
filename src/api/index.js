@@ -15,3 +15,7 @@ export const fetchMember = id =>
 export const fetchMemberTransactions = id =>
   axios.get(`${API_BASE}/members/${id}/transactions`)
     .then(extractData)
+
+export const fetchMemberTransactionsGraph = id =>
+  axios.get(`${API_BASE}/members/${id}/transactions/graphs`)
+    .then(extractData)

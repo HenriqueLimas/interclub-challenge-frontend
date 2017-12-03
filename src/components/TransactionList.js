@@ -1,13 +1,22 @@
 import React from 'react'
+import styled from 'styled-components'
+import TransactionItem from './TransactionItem'
+
+const StyledList = styled.ul`
+  margin: 0;
+  padding: 0;
+  width: 100%;
+`
 
 const TransactionList = ({ transactions }) => (
-  <ul>
+  <StyledList>
     { transactions.map(transaction => (
-      <li key={transaction.id}>
-        {transaction.amount} - {transaction.type}
-      </li>
+      <TransactionItem
+        key={transaction.id}
+        transaction={transaction}
+      />
     ))}
-  </ul>
+  </StyledList>
 )
 
 export default TransactionList
